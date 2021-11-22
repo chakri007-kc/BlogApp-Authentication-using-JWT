@@ -116,22 +116,10 @@ router.put('/api/todo/update/:id',async(req,res) => {
             email: email
         })
         console.log(req.params.id,user1._id)
-
-        const user = await User.findOne(
-            { email: email }
+        const user = await User.updateOne(
+            { _id: user1._id, "list._id": req.params.id },
+            { $set: { "list.$": new_post } }
         )
-
-        // console.log(user)
-
-        await user.list.findOneAndUpdate({ id: req.params.id},{
-            $set :  new_post
-        })
-        // const user = await User.findOneAndUpdate(
-        //     { email: email },                                                                    
-        //     { $set: {list$post:  new_post } }
-        // )
-        // .then(templates => console.log(templates))
-        // .catch(err => console.log(err));
 
         return res.json({status:'ok'})
     }
