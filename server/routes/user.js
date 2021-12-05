@@ -39,7 +39,7 @@ router.post('/api/login', async(req,res) => {
         const token = jwt.sign({
             name: user.name,
             email: user.email
-        },'secret123')
+        },process.env.TOKEN_SECRET)
         return res.json({status:'ok' , user: token})
     }
     else{
@@ -51,7 +51,7 @@ router.get('/api/todo',async(req,res) => {
     const token = req.headers['x-access-token']
 
     try{
-        const decoded = jwt.verify(token,'secret123')
+        const decoded = jwt.verify(token,process.env.TOKEN_SECRET)
         const email = decoded.email;
         const user = await User.findOne({email:email})
         // console.log(user.name)
@@ -66,7 +66,7 @@ router.post('/api/todo/add',async(req,res) => {
     const token = req.headers['x-access-token']
     var new_post = {title:req.body.title,des:req.body.des} 
     try{
-        const decoded = jwt.verify(token,'secret123')
+        const decoded = jwt.verify(token,process.env.TOKEN_SECRET)
         const email = decoded.email;
         const user = await User.findOneAndUpdate(
             { email: email },
@@ -85,7 +85,7 @@ router.delete('/api/todo/:id',async(req,res) => {
     const token = req.headers['x-access-token']
     var delete_post={_id : req.params.id}
     try{
-        const decoded = jwt.verify(token,'secret123')
+        const decoded = jwt.verify(token,process.env.TOKEN_SECRET)
         const email = decoded.email;
         // console.log(email)
         console.log(req.params.id)
@@ -109,7 +109,7 @@ router.put('/api/todo/update/:id',async(req,res) => {
     const token = req.headers['x-access-token']
     var new_post = {title:req.body.title,des:req.body.des} 
     try{
-        const decoded = jwt.verify(token,'secret123')
+        const decoded = jwt.verify(token,process.env.TOKEN_SECRET)
         const email = decoded.email;
         // console.log(email)
         const user1 = await User.findOne({
@@ -120,6 +120,8 @@ router.put('/api/todo/update/:id',async(req,res) => {
             { _id: user1._id, "list._id": req.params.id },
             { $set: { "list.$": new_post } }
         )
+        .then(templates => console.log(templates))
+        .catch(err => console.log(err));
 
         return res.json({status:'ok'})
     }
@@ -128,7 +130,24 @@ router.put('/api/todo/update/:id',async(req,res) => {
     }
 })
 
+router.put('/api/logout',async(req,res) => {
+    const token = req.headers['x-access-token']
 
+    try{
+        const decoded = jwt.verify(token,process.env.TOKEN_SECRET)
+        const email = decoded.email;
+        jwt.sign(token, "", { expiresIn: 1 } , (logout, err) => {
+            if (logout) {
+                res.json({status : 'You have been Logged Out' });
+            } else {
+                res.send({status:'Error'});
+            }
+        });
+    }
+    catch(err){
+         return res.json({status:'error' , error:'invalid token'})
+    }  
+})
 
 
 module.exports = router;

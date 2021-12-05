@@ -58,11 +58,24 @@ const Todo = () => {
     }
 
 
-
+    const handleclick = async() => {
+        const res = await fetch('http://localhost:5000/api/logout',{
+            method: 'PUT',
+            headers:{
+                'x-access-token' : localStorage.getItem('token')
+            }
+        })
+        const data = await res.json()
+        alert(data.status)
+        console.log(data);
+        localStorage.setItem('token','')
+        history.push('/login')
+    }
 
     return (
         <div>
             <AddEvent populateTodo={populateTodo}/>
+            <button onClick={handleclick}>LOGOUT</button>
             <h1>TODO List : </h1> 
             {list.map((event)=>(
                <Event key={event._id} event={event} onDelete={onDelete} populateTodo={populateTodo}/> 
