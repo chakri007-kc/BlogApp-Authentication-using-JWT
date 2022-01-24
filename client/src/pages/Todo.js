@@ -11,7 +11,7 @@ const Todo = () => {
     const [list, setlist] = useState([])
 
     const populateTodo = async() => {
-        const res = await fetch('http://localhost:5000/api/todo',{
+        const res = await fetch('https://todo-app-006.herokuapp.com/api/todo',{
             headers:{
                 'x-access-token' : localStorage.getItem('token')
             }
@@ -56,6 +56,7 @@ const Todo = () => {
             alert(data.error)
         }
     }
+
 
 
     const handleclick = async() => {

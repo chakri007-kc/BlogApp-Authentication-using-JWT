@@ -8,7 +8,7 @@ const UpdateEvent = ({event,populateTodo}) => {
     const onUpdate = async(e) => {
         e.preventDefault();
 
-        const res = await fetch(`http://localhost:5000/api/todo/update/${event._id}`,{
+        const res = await fetch(`https://todo-app-006.herokuapp.com/api/todo/update/${event._id}`,{
             method:'PUT',
             headers: {
                 'x-access-token' : localStorage.getItem('token'),

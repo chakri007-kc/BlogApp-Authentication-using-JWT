@@ -11,7 +11,7 @@ const Login = () => {
 
     const LoginUser = async (e) => {
         e.preventDefault()
-        const response = await fetch('http://localhost:5000/api/login',{
+        const response = await fetch('https://todo-app-006.herokuapp.com/api/login',{
             method: 'POST',
             headers:{
                 'Content-Type' : 'application/json'
@@ -27,7 +27,7 @@ const Login = () => {
         if(data.user){
             localStorage.setItem('token',data.user)
             alert('login successful')
-            const res = await fetch('http://localhost:5000/');
+            const res = await fetch('https://todo-app-006.herokuapp.com/');
             const data1 = await res.json()
             const user = data1.find((k) => k.email === email)
             console.log(user.name)

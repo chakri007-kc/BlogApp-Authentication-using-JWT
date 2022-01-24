@@ -8,7 +8,7 @@ const AddEvent = ({populateTodo}) => {
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        const res = await fetch('http://localhost:5000/api/todo/add',{
+        const res = await fetch('https://todo-app-006.herokuapp.com/api/todo/add',{
             method:'POST',
             headers: {
                 'x-access-token' : localStorage.getItem('token'),
